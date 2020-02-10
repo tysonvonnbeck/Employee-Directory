@@ -13,8 +13,8 @@ class Body extends React.Component {
     search: ""
   };
   
-  search(){
-    
+  search(query){
+
   }
 
   componentDidMount() {
