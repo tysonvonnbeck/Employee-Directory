@@ -10,12 +10,39 @@ class Body extends React.Component {
 
   state = {
     peoples: [],
-    search: ""
+    search: "",
+    results:[],
+    filter: ""
   };
   
-  search(query){
-
+  handleInputChange = event => {
+    console.log("inputChange");
+    event.preventDefault();
+    this.setState({filter: event.target.value.toLowerCase()})
+    // this.results2People()
   }
+
+  // results2People = () => {
+  //   let peoples = [...this.state.results];
+  //   console.log("Hello " + this.state.filter);
+  //   if(this.state.filter > ""){
+  //     let filter = this.state.filter;
+  //     peoples = peoples.filter(person => {
+  //       let name = person.name.first.toLowerCase();
+  //       return name.startsWith(filter);
+  //     })
+  //   }
+  //   if (this.state.sorted){
+  //     peoples.sort( (a,b) => {
+  //       a = a.name.first.toLowerCase()+" "+ a.name.last.toLowerCase();
+  //       b = b.name.first.toLowerCase()+" "+ b.name.last.toLowerCase();
+  //       return (a > b ? 1 : (b > a ? -1 : 0));
+  //     })
+  //   }
+  // //  this.setState({peoples: peoples})
+  //  return peoples;
+  // } 
+
 
   componentDidMount() {
     API.search()
@@ -35,27 +62,19 @@ class Body extends React.Component {
 
   render() {
     return (
+
+
       <div>
         <Wrapper>
           <h1 className="title">Employee Directory</h1>
-          <span className="input-group"><input type="text" className="form-control" /> 
+          <span onChange={this.handleInputChange} className="input-group"><input type="text" className="form-control" /> 
           <button className="btn input-group-btn btn-primary" id="search"> Search </button> </span>
           <hr/>
-          {
-            this.state.peoples.map(peoples => {
-              return (
-
+          {this.state.peoples.map((peoples, key) => (
+              // return (
+               
                 <div className="container" >
                   <table className="table table-striped">
-                    <thead>
-                      <tr>
-                        {/* <th scope="col">image</th>
-                        <th scope="col">name</th>
-                        <th scope="col">email</th>
-                        <th scope="col">DOB</th>
-                        <th scope="col">delete</th> */}
-                      </tr>
-                    </thead>
                     <tbody>
                       <EmployeeCard
                         key={peoples.id.value}
@@ -70,8 +89,8 @@ class Body extends React.Component {
                     </tbody>
                   </table>
                 </div>
-              )
-            })
+              
+          ))
           }
         </Wrapper>
       </div>
