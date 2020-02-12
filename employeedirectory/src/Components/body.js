@@ -11,14 +11,48 @@ class Body extends React.Component {
   state = {
     peoples: [],
     search: "",
-    results:[],
+    results: [],
     filter: ""
   };
-  
+
   handleInputChange = event => {
-    console.log("inputChange");
-    event.preventDefault();
-    this.setState({filter: event.target.value.toLowerCase()})
+    let name = event.target.name
+    let value = event.target.value
+    // brackets allow you extract the value of the variable (name is search)
+    this.setState({
+      [name]: value
+    })
+    console.log(this.state.search.length);
+
+    if (this.state.search.length === 1) {
+      this.setState({
+        peoples: this.state.results
+      })
+    }
+    else {
+      let newPeoples = this.state.peoples.filter(peoples => {
+        console.log(value, peoples.name.first);
+
+        return peoples.name.first.toLowerCase().indexOf(value.toLowerCase()) > -1 || peoples.name.last.toLowerCase().indexOf(value.toLowerCase()) > -1
+
+
+      })
+      this.setState({
+        peoples: newPeoples
+      })
+    }
+
+
+    // filter only takes a true statement
+
+
+
+
+
+
+    // console.log("inputChange");
+    // event.preventDefault();
+    // this.setState({filter: event.target.value.toLowerCase()})
     // this.results2People()
   }
 
@@ -47,7 +81,7 @@ class Body extends React.Component {
   componentDidMount() {
     API.search()
       .then(res => {
-        this.setState({ peoples: res.data.results })
+        this.setState({ peoples: res.data.results , results: res.data.results})
       })
       .catch(err => console.log(err));
   }
@@ -67,13 +101,14 @@ class Body extends React.Component {
       <div>
         <Wrapper>
           <h1 className="title">Employee Directory</h1>
-          <span onChange={this.handleInputChange} className="input-group"><input type="text" className="form-control" /> 
-          <button className="btn input-group-btn btn-primary" id="search"> Search </button> </span>
-          <hr/>
-          {this.state.peoples.map((peoples, key) => (
-              // return (
-               
-                <div className="container" >
+          <span className="input-group"><input type="text" onChange={this.handleInputChange} className="form-control" name="search" value={this.state.search} /> </span>
+          <hr />
+          {
+
+            this.state.peoples.map(peoples => {
+              return (
+
+                <div className="container" key={peoples.id.value}>
                   <table className="table table-striped">
                     <tbody>
                       <EmployeeCard
@@ -89,8 +124,8 @@ class Body extends React.Component {
                     </tbody>
                   </table>
                 </div>
-              
-          ))
+              )
+            })
           }
         </Wrapper>
       </div>
