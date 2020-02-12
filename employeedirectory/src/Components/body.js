@@ -35,14 +35,11 @@ class Body extends React.Component {
 
         return peoples.name.first.toLowerCase().indexOf(value.toLowerCase()) > -1 || peoples.name.last.toLowerCase().indexOf(value.toLowerCase()) > -1
 
-
       })
       this.setState({
         peoples: newPeoples
       })
     }
-
-
     // filter only takes a true statement
 
 
